@@ -1,4 +1,5 @@
-const lifeSessionTimeInMin = 120;
-const authHost = "http://localhost:3000/api/";
+const lifeSessionTimeInMin = 120
 
-export { lifeSessionTimeInMin, authHost };
+const authHost = "https://dummyjson.com/"
+
+export {lifeSessionTimeInMin, authHost} 

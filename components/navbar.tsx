@@ -1,20 +1,43 @@
-import React from "react";
-import { TouchableOpacity, View, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { Pressable, View, StyleSheet, Image } from "react-native";
 
 const NavBar = () => {
+    const [pressedButton, setPressedButton] = useState(null);
+
+    const handlePress = (index) => {
+        setPressedButton(index);
+    };
+
+    const icons = [
+        require('../assets/home_icon.png'),
+        require('../assets/events_icon.png'),
+        require('../assets/map_icon.png'), 
+        require('../assets/control_icon.png'),
+        require('../assets/user_icon.png'), 
+
+    ];
+
     return (
         <View style={styles.navbarContainer}>
             <View style={styles.navbar}>
-                {Array(5).fill(null).map((_, index) => (
-                    <TouchableOpacity
+                {icons.map((icon, index) => (
+                    <Pressable
                         key={index}
+                        onPress={() => handlePress(index)}
                         style={[
                             styles.navButton,
                             index === 2 && styles.navButtonCenter, // Botón central más grande
+                            pressedButton === index && styles.navButtonPressed,
                         ]}
                     >
-                        {/* Puedes agregar íconos o texto dentro de los botones aquí */}
-                    </TouchableOpacity>
+                        <Image
+                            source={icon}
+                            style={{
+                                width: pressedButton === index ? 40 : 30, // Cambia el tamaño de la imagen si el botón está presionado
+                                height: pressedButton === index ? 40 : 30, // Cambia el tamaño de la imagen si el botón está presionado
+                            }}
+                        />
+                    </Pressable>
                 ))}
             </View>
         </View>
@@ -52,6 +75,9 @@ const styles = StyleSheet.create({
         width: 80, 
         height: 80,
         borderRadius: 45,
+    },
+    navButtonPressed: {
+        borderColor: 'white',
     },
 });
 

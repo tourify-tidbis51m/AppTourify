@@ -1,25 +1,26 @@
 import { authHost, lifeSessionTimeInMin } from "../constants/auth.constants";
-async function authService(email, password) {
+
+async function authService(username, password) {
+
     try {
-        const response = await fetch(`${authHost}users/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            email,
-            password,
-            expiresInMins: lifeSessionTimeInMin,
+        const response = await fetch(`${authHost}auth/login`, {
+            method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username,
+                    password,
+                    expiresInMins: lifeSessionTimeInMin,
             }),
         });
 
-        console.log(response)
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Error in login');
+        if(!response.ok){
+            await response.json();
+            throw new Error(response.message);
         }
 
         return response.json();
     } catch (error) {
-        alert("Error in login");
+        alert("Error in login")
         return undefined;
     }
 }

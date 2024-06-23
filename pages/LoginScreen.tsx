@@ -5,13 +5,11 @@ import useAuth from '../hooks/useAuth';
 const { width, height } = Dimensions.get('screen');
 
 const LoginScreen = ({ navigation }) => {
-    const [email, setEmail] = useState('');
+
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const { login, loading } = useAuth();
-    const handleLogin = async () => {
-        await login(email, password);
-    };
+    const { login } = useAuth();
 
     const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -29,6 +27,10 @@ const LoginScreen = ({ navigation }) => {
         }).start();
     };
 
+    const handleLogin = async () => {
+        await login(username, password);
+    };
+
     return (
         <ImageBackground style={styles.background}>
             <Image source={require('../assets/logo.png')} style={styles.logo} />
@@ -39,22 +41,20 @@ const LoginScreen = ({ navigation }) => {
                     style={styles.input} 
                     placeholder="Correo" 
                     placeholderTextColor="#B0B0B0"
-                    value={email}
-                    onChangeText={setEmail}
-                />
+                    onChange={setUsername}
+                    />
                 <Text style={styles.label}>Ingresa tu contraseña:</Text>
                 <TextInput 
                     style={styles.input} 
                     placeholder="Contraseña" 
                     placeholderTextColor="#B0B0B0"
-                    secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
-                />
+                    onChange={setPassword} 
+                    secureTextEntry />
                 <TouchableOpacity
                     onPressIn={handlePressIn}
-                    onPressOut={handlePressOut}
-                    onPress={handleLogin}
+                    onPress={() => {
+                    navigation.navigate('MainMenu')
+                }}
                     style={styles.buttonContainer}
                 >
                     <Animated.View style={[styles.button, { transform: [{ scale: scaleAnim }] }]}>
@@ -63,6 +63,7 @@ const LoginScreen = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
+                        handleLogin
                         navigation.navigate('Register')
                     }}
                     style={styles.buttonContainer}
@@ -145,11 +146,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         textAlign: 'center',
     },
-    errorText: {
-        color: 'red',
-        marginBottom: 10,
-    },
 });
 
 export default LoginScreen;
-
